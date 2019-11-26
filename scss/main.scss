@@ -1,0 +1,58 @@
+@import "./resets";
+@import "./variables";
+
+// Functions should be used to compute and return values
+@function weight($weight-name) {
+  @return map-get($font-weights, $weight-name);
+}
+
+// Mixins (similar to functions) used to define styles
+@mixin flexCenter($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+@mixin theme($light-theme: true) {
+  @if $light-theme {
+    background: lighten($primary-color, 100%);
+    color: darken($text-color, 100%);
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+// Nesting in Sass
+.main {
+  @include flexCenter(row);
+  width: 80%;
+  margin: 0 auto;
+
+  #{&}__paragraph {
+    // Note interpolation here in order for the .css output to be formatted correctly!
+    font-weight: weight(regular);
+
+    &:hover {
+      color: pink;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.light {
+  @include theme($light-theme: true);
+}
+
+body {
+  background: $primary-color;
+  color: $text-color;
+  font-weight: weight(medium);
+}
